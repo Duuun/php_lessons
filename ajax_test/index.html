@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Ajax Test</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" src="css/main.css">
+</head>
+<body>
+<style type="text/css">
+body {
+  margin-top: 100px;
+  text-align: center;
+}
+.hide {
+  display: none;
+}
+.loading {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,.5);
+  background-image: url(../img/712-88.gif);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: 150px 150px;
+}
+</style>
+
+   <form method="post" accept-charset="utf-8">
+    <p>NAME: <input type="text" name="name" id="name"></p>
+  </form>
+
+  <button id="button1">POST</button>
+  <div class="msg"></div>
+  <div class="loading hide"></div>
+
+  <script type="text/javascript">
+
+    $(function() {
+      $('#button1').on('click', function(){
+        $.ajax({
+          url: 'send.php',
+          type: 'POST',
+          data: {
+            name: $('#name').val()
+          },
+
+          //リクエストが完了するまで実行される
+          beforeSend: function(){
+            $('.loading').removeClass('hide');
+          }
+
+        }).done(function(data){
+          $('.loading').addClass('hide');          
+          $('.msg').append('<p>NAME: ' + data + '</p>');
+
+        }).fail(function(XMLHttpRequest, textStatus, errorThrown){
+          console.log("failed...");
+          console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+          console.log("textStatus     : " + textStatus);
+          console.log("errorThrown    : " + errorThrown.message);
+        });
+      });
+    });
+
+  </script>
+</body>
+</html>
